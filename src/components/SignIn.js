@@ -39,13 +39,13 @@ class SignIn extends React.Component {
         <h1>Connexion</h1>
        	<label>
       	Nom utilisateur : 
-      	<input type="text" ref="name" />
+      	<input style={espacemementFormulaire}  type="text" ref="name" />
         </label>
         <br/>
         <br/>
         <label>
         Mot de passe : 
-        <input type="text" ref="password" />
+        <input style={espacemementFormulaire} type="text" ref="password" />
         </label>
         <br/>
         <br/>	

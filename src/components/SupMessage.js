@@ -38,7 +38,6 @@ class SupMessage extends React.Component {
         <br/>
         <br/>
          <button type="button" onClick={this.supMessage}>Supprimer</button>
-       
         <br/>
         <br/>
       </div>

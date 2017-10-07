@@ -1,4 +1,7 @@
 var React = require("react");
+var Jquery = require ("jquery");
+var Jqueryui = require ("jquery-ui");
+
 
 class EnvoiMessage extends React.Component {
 	
@@ -8,10 +11,10 @@ class EnvoiMessage extends React.Component {
     this.envoiMessage = this.envoiMessage.bind(this);
   }
 
-  
-  
-
+ 
+ 
   envoiMessage(){
+
     var message = this.refs.message.value;
     this.setState({
       'message'  : message,
@@ -30,8 +33,7 @@ class EnvoiMessage extends React.Component {
   })
     .then(response => response.json())
     .then(data => sessionStorage.setItem(data.message, data.id))
-  }
-
+    }
 
   render(){
     return(
@@ -39,12 +41,11 @@ class EnvoiMessage extends React.Component {
         <h1>Envoi Message</h1>
         <label>
         Message : 
-        <textarea ref="message" />
+        <textarea style={espacemementFormulaire} ref="message" />
         </label>
         <br/>
         <br/>
-         <button type="button" onClick={this.envoiMessage}>Envoi</button>
-       
+         <button className="btn btn-primary btn-lg" id="load" data-loading-text="<i class='fa fa-spinner fa-spin '></i> Processing Order" type="button" onClick={this.envoiMessage}>Envoi</button>
         <br/>
         <br/>
       </div>
