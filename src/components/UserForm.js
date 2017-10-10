@@ -1,74 +1,68 @@
 var React = require("react");
+var Link = require ("react-router");
+var Button = require ("react-bootstrap-button-loader");
 
 class UserForm extends React.Component {
-	
+  
   constructor(props){
     super(props);
-    this.state = {name: '', image: '', password: ''};
-    this.submitForm = this.submitForm.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.handleSubmit = this.handleSubmit.bind(this);
   }
 
-  submitForm(){
-    var name = this.refs.name.value;
-    var image = this.refs.image.value;
-    var password = this.refs.password.value;
-    this.setState({
-      'name': name,
-      'image': image,
-      'password' : password,
+  handleChange(event){
+    this.setState({[event.target.name] : event.target.value});
+  }
+  
+
+  handleSubmit(event){
+    event.preventDefault();
+
+    fetch('https://messy.now.sh/join', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: this.state.name,
+        password: this.state.password,
+        image: this.state.image,
+      })
     })
-    console.log(this.state);
-  
-	  fetch('https://messy.now.sh/join', {
-	  method: 'POST',
-	  headers: {
-	    'Accept': 'application/json',
-	    'Content-Type': 'application/json',
-	  },
-	  body: JSON.stringify({
-	    name: this.refs.name.value,
-	    image: this.refs.image.value,
-	    password: this.refs.password.value,
-	  })
-	})
+    .then(results =>{return results.json();})
+    .then(data => {this.setState({token: data});this.props.onUserCreated(data);})
   }
+
   
-
-
   render(){
     return(
-      <div>
-      	<h1>Creation User</h1>
-      	<label>
-      	Nom utilisateur : 
-      	<input type="text" ref="name" />
+      <div className="wrapper">
+      <form className="form-signin" onSubmit={this.handleSubmit}>
+        <h2 className="form-signin-heading">Inscription</h2>
+        <label>
+        Pseudo : 
+        <input id="pseudo "className="form-control" type="text" name="name" placeholder="Pseudo" required="" onChange={this.handleChange} />
         </label>
-        <br/>
-        <br/>
         <label>
         Url image : 
-        <input type="text" ref="image" />
+        <input className="form-control" type="url" name="image" placeholder="Url" required="" onChange={this.handleChange}  />
         </label>
-        <br/>
-        	<br/>
         <label>
         Mot de passe : 
-        <input type="text" ref="password" />
+        <input className="form-control" type="password" name="password" placeholder="Mot de passe"  required="" onChange={this.handleChange} />
         </label>
-        <br/>
-        <br/>	
-        <button type="button" onClick={this.submitForm}>Envoyer</button>
-        
-        <h2>Valeurs entrées</h2>
-        <b>
-          {this.state.name}, {this.state.image}, {this.state.password}
-        </b>
-        <br/>
+          <input className="btn btn-lg btn-primary btn-block" type="submit" value="S'enregistrer"/>
+        </form>
         <br/>
       </div>
     )
   }
-
 }
 
+
 module.exports = UserForm;
+
+
+
+

@@ -1,67 +1,59 @@
 var React = require("react");
 
 class SignIn extends React.Component {
-	
+  
   constructor(props){
     super(props);
-    this.state = {name: '',  password: '', message: ''};
-    this.submitForm = this.submitForm.bind(this);
+    this.handleChange = this.handleChange.bind(this);
+    this.connexion = this.connexion.bind(this);
   }
 
-  submitForm(){
-    var name = this.refs.name.value;
-    var password = this.refs.password.value;
-    this.setState({
-      'name': name,
-      'password' : password,
-    })
-    console.log(this.state);
-
-  fetch('https://messy.now.sh/authenticate', {
-    method: 'POST',
-    headers: {
-      'Accept': 'application/json',
-      'Content-Type': 'application/json',
-    },
-    body: JSON.stringify({
-      name: this.refs.name.value,
-      password: this.refs.password.value,
-    })
-  })
-    .then(response => response.json())
-    .then(data => sessionStorage.setItem("token", data.token))
-
+  handleChange(event){
+    this.setState({[event.target.name] : event.target.value});
   }
+
+  connexion(event){
+    event.preventDefault();
+    fetch('https://messy.now.sh/authenticate', {
+      method: 'POST',
+      headers: {
+        'Accept': 'application/json',
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        name: this.state.name,
+        password: this.state.password,
+      })
+    })
+    .then(resultat => {return resultat.json()})
+    .then(data => {this.props.onUserLogged(data);
+    })
+  }
+
   
   render(){
     return(
-        <div>
-        <h1>Connexion</h1>
-       	<label>
-      	Nom utilisateur : 
-      	<input style={espacemementFormulaire}  type="text" ref="name" />
-        </label>
-        <br/>
-        <br/>
-        <label>
-        Mot de passe : 
-        <input style={espacemementFormulaire} type="text" ref="password" />
-        </label>
-        <br/>
-        <br/>	
-        <button type="button" onClick={this.submitForm}>Connexion</button>
-
-
-        <h2>Valeurs entrées</h2>
-        <b>
-          {this.state.name} ,  {this.state.password}
-        </b>
-        <br/>
-        <br/>
+       <div className="wrapper">
+        <form className="form-signin" onSubmit={this.connexion}>
+        <h2 className="form-signin-heading">Connexion</h2>
+          <label>
+            Pseudo : 
+            <input className="form-control" type="text" name="name" placeholder="Pseudo" required=""  onChange={this.handleChange}/>
+          </label>
+          <label>
+            Mot de passe : 
+            <input className="form-control" type="password" name="password" placeholder="Mot de passe"  required=""  onChange={this.handleChange}/>
+          </label>
+          <input className="btn btn-lg btn-primary btn-block" type="submit" value="Se connecter"/>
+        </form>
       </div>
-    );
+      );
   }
-
 }
 
+
 module.exports = SignIn;
+
+
+
+

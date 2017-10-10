@@ -2,28 +2,60 @@ var React = require("react");
 var ReactDOM = require("react-dom");
 var UserForm = require("./components/UserForm");
 var SignIn = require("./components/SignIn");
-var EnvoiMessage = require("./components/EnvoiMessage");
 var RecupMessage = require("./components/RecupMessage");
+var EnvoiMessage = require("./components/EnvoiMessage");
 var SupMessage = require("./components/SupMessage");
 
-ReactDOM.render(
-  <UserForm />,
-  document.getElementById('main')
-);
-ReactDOM.render(
-  <SignIn />,
-  document.getElementById('connexion')
-);
-ReactDOM.render(
-  <EnvoiMessage />,
-  document.getElementById('envoimessage')
-);
-ReactDOM.render(
-  <RecupMessage />,
-  document.getElementById('recupmessage')
-);
-ReactDOM.render(
-  <SupMessage />,
-  document.getElementById('supmessage')
-);
+
+class Application extends React.Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      idUser: sessionStorage.getItem('idUser'),
+      token: sessionStorage.getItem('token')
+    }
+    this.enregistreConnexion = this.enregistreConnexion.bind(this);
+    this.deconnexion = this.deconnexion.bind(this);
+  }
+
+  deconnexion(event){
+    sessionStorage.clear();
+    console.log(sessionStorage);
+  }
+
+  enregistreConnexion(user) {
+    console.log(user);
+    sessionStorage.setItem('token', user.token);
+    sessionStorage.setItem('idUser', user.user.id);
+    this.setState({idUser: user.user.id})
+    this.setState({token: user.token})
+
+  }
+  render() {
+    if(!this.state.token){ 
+      return (
+        <div id="Connect">
+          <UserForm onUserCreated={this.enregistreConnexion}/>
+          <SignIn onUserLogged={this.enregistreConnexion}/>
+        </div>
+        )
+    } 
+    else {
+      return (
+        <div>
+          <EnvoiMessage token={this.state.token}/>
+          <br /><br />
+          <RecupMessage idUser={this.state.idUser} token={this.state.token}/>
+          <form onSubmit={this.deconnexion}>
+            <input className ="btn btn-primary" type="submit" value="Se déconnecter" />
+          </form>
+        </div>
+      )
+    }
+    return <div>rien</div>
+  }
+}
+
+ReactDOM.render(<Application />, document.getElementById("main"));
+
 

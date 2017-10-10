@@ -18,9 +18,11 @@
     "loaders.css": "^0.1.2",
     "react": "^16.0.0",
     "react-async-button": "^0.2.0",
+    "react-bootstrap-button-loader": "^1.0.8",
     "react-dom": "^16.0.0",
     "react-loaders": "^2.6.0",
     "react-progress-button": "^5.1.0",
+    "react-router": "^4.2.0",
     "whatwg-fetch": "^2.0.3"
   },
   "devDependencies": {

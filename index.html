@@ -2,22 +2,28 @@
 <html lang="fr">
 <head>
 	<link href="bootstrap/css/bootstrap.min.css" rel="stylesheet">
+	<link href="css/signin.css" rel="stylesheet">
     <meta charset="UTF-8">
-    <title>ReactJS</title>
+    <title></title>
 </head>
-<body>
- 	<script type="text/javascript">
-		const espacemementFormulaire = {
-		  marginLeft: 10,
-		};
- 	</script>
-    <div id="main"></div>
-    <div id="connexion"></div>
-    <div id="envoimessage"></div>
-    <div id="recupmessage"></div>
-    <div id="supmessage"></div>
+<body onload="chargement()">
+
+	<script type="text/javascript">
+		function chargement(){
+   		document.getElementById('chargement').style.display='none';
+   		document.getElementById('site').style.visibility='visible';
+		}
+	</script>
+
+	<div id="chargement" style="width:150px;height:50px;position:absolute;top:0;left:0;color:red;font-weight:bold;font-size:14px;background:white;">
+   		Chargement ...
+	</div>
+	<div id="site">
+    <div id="main" onload="chargement()"></div><br>
     <script src="./build/application.js"></script>
-    <script src="https://oss.maxcdn.com/html5shiv/3.7.3/html5shiv.min.js"></script>
- 	<script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
+    <script src="https://unpkg.com/react@16/umd/react.production.min.js"></script>
+	<script src="https://unpkg.com/react-dom@16/umd/react-dom.production.min.js"></script>
+    </div>
 </body>
 </html>
+
