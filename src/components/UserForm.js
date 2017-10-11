@@ -1,6 +1,6 @@
 var React = require("react");
-var Link = require ("react-router");
-var Button = require ("react-bootstrap-button-loader");
+
+
 
 class UserForm extends React.Component {
   
