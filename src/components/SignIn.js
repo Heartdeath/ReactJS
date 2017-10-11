@@ -1,4 +1,6 @@
 var React = require("react");
+var render  = require("react-dom").default;
+var AsyncButton = require("react-async-button").default;
 
 class SignIn extends React.Component {
   
@@ -6,11 +8,13 @@ class SignIn extends React.Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.connexion = this.connexion.bind(this);
+    this.clickHandler = this.clickHandler.bind(this);
   }
 
   handleChange(event){
     this.setState({[event.target.name] : event.target.value});
   }
+  
 
   connexion(event){
     event.preventDefault();
@@ -30,7 +34,16 @@ class SignIn extends React.Component {
     })
   }
 
-  
+   clickHandler(event) {
+    return new Promise((resolve, reject) => {
+      // some async stuff
+      setTimeout(resolve, 1500);
+      this.connexion(event);
+      
+    })
+  }
+
+
   render(){
     return(
        <div className="wrapper">
@@ -44,8 +57,18 @@ class SignIn extends React.Component {
             Mot de passe : 
             <input className="form-control" type="password" name="password" placeholder="Mot de passe"  required=""  onChange={this.handleChange}/>
           </label>
-          <input className="btn btn-lg btn-primary btn-block" type="submit" value="Se connecter"/>
-        </form>
+         <AsyncButton
+          className="btn btn-lg btn-primary btn-block"
+          text="Connexion"
+          pendingText="Connexion..."
+          fulFilledText="Connexion réussi !"
+          rejectedText="Impossible ! Try Again"
+          loadingClass="isSaving"
+          fulFilledClass="btn-primary"
+          rejectedClass="btn-danger"
+          onClick={this.clickHandler}
+         />
+         </form>
       </div>
       );
   }

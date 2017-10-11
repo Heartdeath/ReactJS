@@ -5,7 +5,8 @@ var SignIn = require("./components/SignIn");
 var RecupMessage = require("./components/RecupMessage");
 var EnvoiMessage = require("./components/EnvoiMessage");
 var SupMessage = require("./components/SupMessage");
-
+var render  = require("react-dom").default;
+var AsyncButton = require("react-async-button").default;
 
 class Application extends React.Component {
   constructor(props) {
@@ -16,6 +17,7 @@ class Application extends React.Component {
     }
     this.enregistreConnexion = this.enregistreConnexion.bind(this);
     this.deconnexion = this.deconnexion.bind(this);
+    this.clickHandler = this.clickHandler.bind(this);
   }
 
   deconnexion(event){
@@ -31,6 +33,16 @@ class Application extends React.Component {
     this.setState({token: user.token})
 
   }
+
+   clickHandler(event) {
+    return new Promise((resolve, reject) => {
+      // some async stuff
+      setTimeout(resolve, 500);
+      this.deconnexion(event);
+      
+    })
+  }
+  
   render() {
     if(!this.state.token){ 
       return (
@@ -43,9 +55,8 @@ class Application extends React.Component {
     else {
       return (
         <div>
-          <EnvoiMessage token={this.state.token}/>
-          <br /><br />
           <RecupMessage idUser={this.state.idUser} token={this.state.token}/>
+          <EnvoiMessage token={this.state.token}/>
           <form onSubmit={this.deconnexion}>
             <input className ="btn btn-primary" type="submit" value="Se déconnecter" />
           </form>

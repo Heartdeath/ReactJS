@@ -48,9 +48,11 @@
 	var ReactDOM = __webpack_require__(12);
 	var UserForm = __webpack_require__(32);
 	var SignIn = __webpack_require__(33);
-	var RecupMessage = __webpack_require__(34);
-	var EnvoiMessage = __webpack_require__(36);
-	var SupMessage = __webpack_require__(35);
+	var RecupMessage = __webpack_require__(37);
+	var EnvoiMessage = __webpack_require__(39);
+	var SupMessage = __webpack_require__(38);
+	var render = __webpack_require__(12).default;
+	var AsyncButton = __webpack_require__(34).default;
 
 	class Application extends React.Component {
 	  constructor(props) {
@@ -61,6 +63,7 @@
 	    };
 	    this.enregistreConnexion = this.enregistreConnexion.bind(this);
 	    this.deconnexion = this.deconnexion.bind(this);
+	    this.clickHandler = this.clickHandler.bind(this);
 	  }
 
 	  deconnexion(event) {
@@ -75,6 +78,15 @@
 	    this.setState({ idUser: user.user.id });
 	    this.setState({ token: user.token });
 	  }
+
+	  clickHandler(event) {
+	    return new Promise((resolve, reject) => {
+	      // some async stuff
+	      setTimeout(resolve, 500);
+	      this.deconnexion(event);
+	    });
+	  }
+
 	  render() {
 	    if (!this.state.token) {
 	      return React.createElement(
@@ -87,10 +99,8 @@
 	      return React.createElement(
 	        "div",
 	        null,
-	        React.createElement(EnvoiMessage, { token: this.state.token }),
-	        React.createElement("br", null),
-	        React.createElement("br", null),
 	        React.createElement(RecupMessage, { idUser: this.state.idUser, token: this.state.token }),
+	        React.createElement(EnvoiMessage, { token: this.state.token }),
 	        React.createElement(
 	          "form",
 	          { onSubmit: this.deconnexion },
@@ -21172,6 +21182,8 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var render = __webpack_require__(12).default;
+	var AsyncButton = __webpack_require__(34).default;
 
 	class UserForm extends React.Component {
 
@@ -21179,6 +21191,7 @@
 	    super(props);
 	    this.handleChange = this.handleChange.bind(this);
 	    this.handleSubmit = this.handleSubmit.bind(this);
+	    this.clickHandler = this.clickHandler.bind(this);
 	  }
 
 	  handleChange(event) {
@@ -21206,39 +21219,57 @@
 	    });
 	  }
 
+	  clickHandler(event) {
+	    return new Promise((resolve, reject) => {
+	      // some async stuff
+	      setTimeout(resolve, 1500);
+	      this.handleSubmit(event);
+	    });
+	  }
+
 	  render() {
 	    return React.createElement(
-	      'div',
-	      { className: 'wrapper' },
+	      "div",
+	      { className: "wrapper" },
 	      React.createElement(
-	        'form',
-	        { className: 'form-signin', onSubmit: this.handleSubmit },
+	        "form",
+	        { className: "form-signin" },
 	        React.createElement(
-	          'h2',
-	          { className: 'form-signin-heading' },
-	          'Inscription'
+	          "h2",
+	          { className: "form-signin-heading" },
+	          "Inscription"
 	        ),
 	        React.createElement(
-	          'label',
+	          "label",
 	          null,
-	          'Pseudo :',
-	          React.createElement('input', { id: 'pseudo ', className: 'form-control', type: 'text', name: 'name', placeholder: 'Pseudo', required: '', onChange: this.handleChange })
+	          "Pseudo :",
+	          React.createElement("input", { id: "pseudo ", className: "form-control", type: "text", name: "name", placeholder: "Pseudo", required: "", onChange: this.handleChange })
 	        ),
 	        React.createElement(
-	          'label',
+	          "label",
 	          null,
-	          'Url image :',
-	          React.createElement('input', { className: 'form-control', type: 'url', name: 'image', placeholder: 'Url', required: '', onChange: this.handleChange })
+	          "Url image :",
+	          React.createElement("input", { className: "form-control", type: "url", name: "image", placeholder: "Url", required: "", onChange: this.handleChange })
 	        ),
 	        React.createElement(
-	          'label',
+	          "label",
 	          null,
-	          'Mot de passe :',
-	          React.createElement('input', { className: 'form-control', type: 'password', name: 'password', placeholder: 'Mot de passe', required: '', onChange: this.handleChange })
+	          "Mot de passe :",
+	          React.createElement("input", { className: "form-control", type: "password", name: "password", placeholder: "Mot de passe", required: "", onChange: this.handleChange })
 	        ),
-	        React.createElement('input', { className: 'btn btn-lg btn-primary btn-block', type: 'submit', value: 'S\'enregistrer' })
+	        React.createElement(AsyncButton, {
+	          className: "btn btn-lg btn-primary btn-block",
+	          text: "Inscription",
+	          pendingText: "Inscription...",
+	          fulFilledText: "Inscription r\xE9ussi !",
+	          rejectedText: "Impossible ! Try Again",
+	          loadingClass: "isSaving",
+	          fulFilledClass: "btn-primary",
+	          rejectedClass: "btn-danger",
+	          onClick: this.clickHandler
+	        })
 	      ),
-	      React.createElement('br', null)
+	      React.createElement("br", null)
 	    );
 	  }
 	}
@@ -21250,6 +21281,8 @@
 /***/ (function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var render = __webpack_require__(12).default;
+	var AsyncButton = __webpack_require__(34).default;
 
 	class SignIn extends React.Component {
 
@@ -21257,6 +21290,7 @@
 	    super(props);
 	    this.handleChange = this.handleChange.bind(this);
 	    this.connexion = this.connexion.bind(this);
+	    this.clickHandler = this.clickHandler.bind(this);
 	  }
 
 	  handleChange(event) {
@@ -21282,31 +21316,49 @@
 	    });
 	  }
 
+	  clickHandler(event) {
+	    return new Promise((resolve, reject) => {
+	      // some async stuff
+	      setTimeout(resolve, 1500);
+	      this.connexion(event);
+	    });
+	  }
+
 	  render() {
 	    return React.createElement(
-	      'div',
-	      { className: 'wrapper' },
+	      "div",
+	      { className: "wrapper" },
 	      React.createElement(
-	        'form',
-	        { className: 'form-signin', onSubmit: this.connexion },
+	        "form",
+	        { className: "form-signin", onSubmit: this.connexion },
 	        React.createElement(
-	          'h2',
-	          { className: 'form-signin-heading' },
-	          'Connexion'
+	          "h2",
+	          { className: "form-signin-heading" },
+	          "Connexion"
 	        ),
 	        React.createElement(
-	          'label',
+	          "label",
 	          null,
-	          'Pseudo :',
-	          React.createElement('input', { className: 'form-control', type: 'text', name: 'name', placeholder: 'Pseudo', required: '', onChange: this.handleChange })
+	          "Pseudo :",
+	          React.createElement("input", { className: "form-control", type: "text", name: "name", placeholder: "Pseudo", required: "", onChange: this.handleChange })
 	        ),
 	        React.createElement(
-	          'label',
+	          "label",
 	          null,
-	          'Mot de passe :',
-	          React.createElement('input', { className: 'form-control', type: 'password', name: 'password', placeholder: 'Mot de passe', required: '', onChange: this.handleChange })
+	          "Mot de passe :",
+	          React.createElement("input", { className: "form-control", type: "password", name: "password", placeholder: "Mot de passe", required: "", onChange: this.handleChange })
 	        ),
-	        React.createElement('input', { className: 'btn btn-lg btn-primary btn-block', type: 'submit', value: 'Se connecter' })
+	        React.createElement(AsyncButton, {
+	          className: "btn btn-lg btn-primary btn-block",
+	          text: "Connexion",
+	          pendingText: "Connexion...",
+	          fulFilledText: "Connexion r\xE9ussi !",
+	          rejectedText: "Impossible ! Try Again",
+	          loadingClass: "isSaving",
+	          fulFilledClass: "btn-primary",
+	          rejectedClass: "btn-danger",
+	          onClick: this.clickHandler
+	        })
 	      )
 	    );
 	  }
@@ -21318,8 +21370,248 @@
 /* 34 */
 /***/ (function(module, exports, __webpack_require__) {
 
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+	exports.AsyncButton = undefined;
+
+	var _AsyncButton = __webpack_require__(35);
+
+	var _AsyncButton2 = _interopRequireDefault(_AsyncButton);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	exports.AsyncButton = _AsyncButton2.default;
+	exports.default = _AsyncButton2.default;
+
+/***/ }),
+/* 35 */
+/***/ (function(module, exports, __webpack_require__) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _extends = Object.assign || function (target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i]; for (var key in source) { if (Object.prototype.hasOwnProperty.call(source, key)) { target[key] = source[key]; } } } return target; };
+
+	var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+	var _react = __webpack_require__(1);
+
+	var _react2 = _interopRequireDefault(_react);
+
+	var _propTypes = __webpack_require__(29);
+
+	var _propTypes2 = _interopRequireDefault(_propTypes);
+
+	var _utils = __webpack_require__(36);
+
+	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+	function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
+
+	function _objectWithoutProperties(obj, keys) { var target = {}; for (var i in obj) { if (keys.indexOf(i) >= 0) continue; if (!Object.prototype.hasOwnProperty.call(obj, i)) continue; target[i] = obj[i]; } return target; }
+
+	function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+	function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
+
+	function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
+
+	var AsyncButton = function (_React$Component) {
+	  _inherits(AsyncButton, _React$Component);
+
+	  function AsyncButton() {
+	    var _ref;
+
+	    var _temp, _this, _ret;
+
+	    _classCallCheck(this, AsyncButton);
+
+	    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+	      args[_key] = arguments[_key];
+	    }
+
+	    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AsyncButton.__proto__ || Object.getPrototypeOf(AsyncButton)).call.apply(_ref, [this].concat(args))), _this), _this.state = {
+	      asyncState: null
+	    }, _temp), _possibleConstructorReturn(_this, _ret);
+	  }
+
+	  _createClass(AsyncButton, [{
+	    key: 'componentWillUnmount',
+	    value: function componentWillUnmount() {
+	      this.isUnmounted = true;
+	    }
+	  }, {
+	    key: 'resetState',
+	    value: function resetState() {
+	      this.setState({
+	        asyncState: null
+	      });
+	    }
+	  }, {
+	    key: 'handleClick',
+	    value: function handleClick() {
+	      var _this2 = this;
+
+	      var clickHandler = this.props.onClick;
+	      if (typeof clickHandler === 'function') {
+	        this.setState({
+	          asyncState: 'pending'
+	        });
+
+	        for (var _len2 = arguments.length, args = Array(_len2), _key2 = 0; _key2 < _len2; _key2++) {
+	          args[_key2] = arguments[_key2];
+	        }
+
+	        var returnFn = clickHandler.apply(null, args);
+	        if (returnFn && typeof returnFn.then === 'function') {
+	          returnFn.then(function () {
+	            if (_this2.isUnmounted) {
+	              return;
+	            }
+	            _this2.setState({
+	              asyncState: 'fulfilled'
+	            });
+	          }).catch(function (error) {
+	            if (_this2.isUnmounted) {
+	              return;
+	            }
+	            _this2.setState({
+	              asyncState: 'rejected'
+	            });
+	            throw error;
+	          });
+	        } else {
+	          this.resetState();
+	        }
+	      }
+	    }
+	  }, {
+	    key: 'render',
+	    value: function render() {
+	      var _classNames,
+	          _this3 = this;
+
+	      var _props = this.props,
+	          children = _props.children,
+	          text = _props.text,
+	          pendingText = _props.pendingText,
+	          fulFilledText = _props.fulFilledText,
+	          rejectedText = _props.rejectedText,
+	          _props$className = _props.className,
+	          className = _props$className === undefined ? '' : _props$className,
+	          loadingClass = _props.loadingClass,
+	          fulFilledClass = _props.fulFilledClass,
+	          rejectedClass = _props.rejectedClass,
+	          disabled = _props.disabled,
+	          attributes = _objectWithoutProperties(_props, ['children', 'text', 'pendingText', 'fulFilledText', 'rejectedText', 'className', 'loadingClass', 'fulFilledClass', 'rejectedClass', 'disabled']);
+
+	      var asyncState = this.state.asyncState;
+
+	      var isPending = asyncState === 'pending';
+	      var isFulfilled = asyncState === 'fulfilled';
+	      var isRejected = asyncState === 'rejected';
+	      var isDisabled = disabled || isPending;
+	      var buttonText = void 0;
+
+	      if (isPending) {
+	        buttonText = pendingText;
+	      } else if (isFulfilled) {
+	        buttonText = fulFilledText;
+	      } else if (isRejected) {
+	        buttonText = rejectedText;
+	      }
+	      buttonText = buttonText || text;
+
+	      return _react2.default.createElement(
+	        'button',
+	        _extends({}, attributes, {
+	          className: (0, _utils.classNames)(className, (_classNames = {}, _defineProperty(_classNames, loadingClass, isPending), _defineProperty(_classNames, fulFilledClass, isFulfilled), _defineProperty(_classNames, rejectedClass, isRejected), _classNames)),
+	          disabled: isDisabled,
+	          onClick: function onClick(event) {
+	            return _this3.handleClick(event);
+	          }
+	        }),
+	        typeof children === 'function' ? children({
+	          buttonText: buttonText,
+	          isPending: isPending,
+	          isFulfilled: isFulfilled,
+	          isRejected: isRejected
+	        }) : children || buttonText
+	      );
+	    }
+	  }]);
+
+	  return AsyncButton;
+	}(_react2.default.Component);
+
+	exports.default = AsyncButton;
+
+
+	AsyncButton.propTypes = {
+	  children: _propTypes2.default.oneOfType([_propTypes2.default.func, _propTypes2.default.node]),
+	  className: _propTypes2.default.string,
+	  loadingClass: _propTypes2.default.string,
+	  fulFilledClass: _propTypes2.default.string,
+	  rejectedClass: _propTypes2.default.string,
+	  disabled: _propTypes2.default.bool,
+	  text: _propTypes2.default.string,
+	  pendingText: _propTypes2.default.string,
+	  fulFilledText: _propTypes2.default.string,
+	  rejectedText: _propTypes2.default.string,
+	  onClick: _propTypes2.default.func
+	};
+
+	AsyncButton.defaultProps = {
+	  loadingClass: 'AsyncButton--loading',
+	  fulFilledClass: 'AsyncButton--fulfilled',
+	  rejectedClass: 'AsyncButton--rejected'
+	};
+
+/***/ }),
+/* 36 */
+/***/ (function(module, exports) {
+
+	'use strict';
+
+	Object.defineProperty(exports, "__esModule", {
+	  value: true
+	});
+
+	var _typeof = typeof Symbol === "function" && typeof Symbol.iterator === "symbol" ? function (obj) { return typeof obj; } : function (obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; };
+
+	var classNames = exports.classNames = function classNames() {
+	  for (var _len = arguments.length, klasses = Array(_len), _key = 0; _key < _len; _key++) {
+	    klasses[_key] = arguments[_key];
+	  }
+
+	  return klasses.reduce(function (prev, curr) {
+	    if (typeof curr === 'string' && curr) {
+	      prev.push(curr);
+	    } else if ((typeof curr === 'undefined' ? 'undefined' : _typeof(curr)) === 'object') {
+	      Object.keys(curr).map(function (key) {
+	        if (curr[key]) {
+	          prev.push(key);
+	        }
+	      });
+	    }
+	    return prev;
+	  }, []).join(' ');
+	};
+
+/***/ }),
+/* 37 */
+/***/ (function(module, exports, __webpack_require__) {
+
 	var React = __webpack_require__(1);
-	var SupMessage = __webpack_require__(35);
+	var SupMessage = __webpack_require__(38);
+	var render = __webpack_require__(12).default;
+	var AsyncButton = __webpack_require__(34).default;
 
 	class RecupMessage extends React.Component {
 
@@ -21327,6 +21619,7 @@
 	    super(props);
 	    this.state = { messages: [] };
 	    this.recupMessage = this.recupMessage.bind(this);
+	    this.clickHandler = this.clickHandler.bind(this);
 	  }
 
 	  recupMessage() {
@@ -21341,6 +21634,14 @@
 	    }).then(data => {
 	      this.setState({ messages: data });
 	      var rechargement = setTimeout(this.recupMessage.bind(this), 500);
+	    });
+	  }
+
+	  clickHandler() {
+	    return new Promise((resolve, reject) => {
+	      // some async stuff
+	      setTimeout(resolve, 1500);
+	      this.recupMessage();
 	    });
 	  }
 
@@ -21361,7 +21662,9 @@
 	        " -----------------------------------------------------------------------------------",
 	        React.createElement("br", null),
 	        " Date/heure : ",
-	        message.date,
+	        message.date.substr(0, 10),
+	        " / ",
+	        message.date.substr(11, 11),
 	        React.createElement("br", null),
 	        " -----------------------------------------------------------------------------------",
 	        React.createElement("br", null),
@@ -21388,16 +21691,18 @@
 	        ),
 	        React.createElement("br", null)
 	      ),
-	      React.createElement(
-	        "button",
-	        { className: "btn btn-primary", type: "button", onClick: this.recupMessage },
-	        "R\xE9cup\xE9ration"
-	      ),
-	      React.createElement(
-	        "button",
-	        { className: "btn btn-primary", type: "button", onClick: this.rechargement = null },
-	        "Stop R\xE9cup\xE9ration"
-	      )
+	      React.createElement("br", null),
+	      React.createElement(AsyncButton, {
+	        className: "btn btn-lg btn-primary btn-block",
+	        text: "R\xE9cup\xE9ration",
+	        pendingText: "R\xE9cup\xE9ration...",
+	        fulFilledText: "R\xE9cup\xE9ration r\xE9ussi !",
+	        rejectedText: "Impossible ! Try Again",
+	        loadingClass: "isSaving",
+	        fulFilledClass: "btn-primary",
+	        rejectedClass: "btn-danger",
+	        onClick: this.clickHandler
+	      })
 	    );
 	  }
 
@@ -21406,7 +21711,7 @@
 	module.exports = RecupMessage;
 
 /***/ }),
-/* 35 */
+/* 38 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
@@ -21446,10 +21751,12 @@
 	module.exports = SupMessage;
 
 /***/ }),
-/* 36 */
+/* 39 */
 /***/ (function(module, exports, __webpack_require__) {
 
 	var React = __webpack_require__(1);
+	var render = __webpack_require__(12).default;
+	var AsyncButton = __webpack_require__(34).default;
 
 	class EnvoiMessage extends React.Component {
 
@@ -21457,6 +21764,7 @@
 	    super(props);
 	    this.envoiMessage = this.envoiMessage.bind(this);
 	    this.handleChange = this.handleChange.bind(this);
+	    this.clickHandler = this.clickHandler.bind(this);
 	  }
 
 	  handleChange(event) {
@@ -21478,29 +21786,46 @@
 	    }).then(response => response.json()).then(data => sessionStorage.setItem(data.message, data.id));
 	  }
 
+	  clickHandler(event) {
+	    return new Promise((resolve, reject) => {
+	      // some async stuff
+	      setTimeout(resolve, 500);
+	      this.envoiMessage(event);
+	    });
+	  }
+
 	  render() {
 	    return React.createElement(
-	      'div',
-	      { className: 'wrapper' },
+	      "div",
+	      null,
 	      React.createElement(
-	        'form',
-	        { className: 'form-signin', onSubmit: this.envoiMessage },
+	        "form",
+	        null,
 	        React.createElement(
-	          'h2',
-	          { className: 'form-signin-heading' },
-	          'Envoi Message'
+	          "div",
+	          { className: "panel-footer" },
+	          React.createElement(
+	            "div",
+	            { className: "input-group" },
+	            React.createElement("input", { id: "btn-input", type: "text", className: "form-control input-sm", name: "message", onChange: this.handleChange, placeholder: "Tape ton message ici..." }),
+	            React.createElement(
+	              "span",
+	              { className: "input-group-btn" },
+	              React.createElement(AsyncButton, {
+	                className: "btn btn-lg btn-primary btn-block",
+	                text: "Envoi",
+	                pendingText: "Envoi du message...",
+	                fulFilledText: "Envoi r\xE9ussi !",
+	                rejectedText: "Impossible ! Taper un message",
+	                loadingClass: "isSaving",
+	                fulFilledClass: "btn-primary",
+	                rejectedClass: "btn-danger",
+	                onClick: this.clickHandler
+	              })
+	            )
+	          )
 	        ),
-	        React.createElement(
-	          'label',
-	          null,
-	          'Message :',
-	          React.createElement('textarea', { className: 'form-control', rows: '3', name: 'message', placeholder: 'Message', required: '', onChange: this.handleChange })
-	        ),
-	        React.createElement('br', null),
-	        React.createElement('br', null),
-	        React.createElement('input', { className: 'btn btn-lg btn-primary btn-block', type: 'submit', value: 'Envoyer' }),
-	        React.createElement('br', null),
-	        React.createElement('br', null)
+	        React.createElement("br", null)
 	      )
 	    );
 	  }

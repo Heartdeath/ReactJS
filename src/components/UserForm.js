@@ -1,5 +1,6 @@
 var React = require("react");
-
+var render  = require("react-dom").default;
+var AsyncButton = require("react-async-button").default;
 
 
 class UserForm extends React.Component {
@@ -8,6 +9,7 @@ class UserForm extends React.Component {
     super(props);
     this.handleChange = this.handleChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
+    this.clickHandler = this.clickHandler.bind(this);
   }
 
   handleChange(event){
@@ -34,11 +36,19 @@ class UserForm extends React.Component {
     .then(data => {this.setState({token: data});this.props.onUserCreated(data);})
   }
 
+  clickHandler(event) {
+      return new Promise((resolve, reject) => {
+        // some async stuff
+        setTimeout(resolve, 1500);
+        this.handleSubmit(event);
+        
+      })
+    }
   
   render(){
     return(
       <div className="wrapper">
-      <form className="form-signin" onSubmit={this.handleSubmit}>
+      <form className="form-signin">
         <h2 className="form-signin-heading">Inscription</h2>
         <label>
         Pseudo : 
@@ -52,7 +62,17 @@ class UserForm extends React.Component {
         Mot de passe : 
         <input className="form-control" type="password" name="password" placeholder="Mot de passe"  required="" onChange={this.handleChange} />
         </label>
-          <input className="btn btn-lg btn-primary btn-block" type="submit" value="S'enregistrer"/>
+         <AsyncButton
+          className="btn btn-lg btn-primary btn-block"
+          text="Inscription"
+          pendingText="Inscription..."
+          fulFilledText="Inscription réussi !"
+          rejectedText="Impossible ! Try Again"
+          loadingClass="isSaving"
+          fulFilledClass="btn-primary"
+          rejectedClass="btn-danger"
+          onClick={this.clickHandler}
+         />
         </form>
         <br/>
       </div>

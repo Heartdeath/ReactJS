@@ -1,5 +1,7 @@
 var React = require("react");
 var SupMessage = require("./SupMessage");
+var render  = require("react-dom").default;
+var AsyncButton = require("react-async-button").default;
 
 class RecupMessage extends React.Component {
   
@@ -7,6 +9,7 @@ class RecupMessage extends React.Component {
     super(props);
     this.state = {messages: [] } ;
     this.recupMessage = this.recupMessage.bind(this);
+    this.clickHandler = this.clickHandler.bind(this);
   }
 
   
@@ -25,6 +28,15 @@ class RecupMessage extends React.Component {
   
   }
 
+  clickHandler() {
+      return new Promise((resolve, reject) => {
+        // some async stuff
+        setTimeout(resolve, 1500);
+        this.recupMessage();
+        
+      })
+    }
+
   render(){
     let messages = this.state.messages.map((message) => {
     return(
@@ -33,7 +45,7 @@ class RecupMessage extends React.Component {
         <br/> ----------------------------------------------------------------------------------- 
         <br/>Pseudo : {message.user.name}  
         <br/> ----------------------------------------------------------------------------------- 
-        <br/> Date/heure : {message.date} 
+        <br/> Date/heure : {message.date.substr(0, 10) } / {message.date.substr(11, 11) }
         <br/> ----------------------------------------------------------------------------------- 
         <br/> Message : {message.message} 
         
@@ -45,11 +57,21 @@ class RecupMessage extends React.Component {
         <div className="wrapper">
           <h2 className="form-signin-heading">Liste de messages</h2>
           <div style={{overflow: "scroll", width : "1800px", height:"500px", border: "solid 1px black" }}>
-            <h2>{messages}</h2>
-            <br/>
+          <h2>{messages}</h2>
+          <br/>
           </div>
-          <button className ="btn btn-primary" type="button" onClick={this.recupMessage}>Récupération</button>
-          <button className = "btn btn-primary" type="button" onClick={this.rechargement=null}>Stop Récupération</button>
+          <br/>
+           <AsyncButton
+          className="btn btn-lg btn-primary btn-block"
+          text="Récupération"
+          pendingText="Récupération..."
+          fulFilledText="Récupération réussi !"
+          rejectedText="Impossible ! Try Again"
+          loadingClass="isSaving"
+          fulFilledClass="btn-primary"
+          rejectedClass="btn-danger"
+          onClick={this.clickHandler}
+         />
         </div>
     );
   }

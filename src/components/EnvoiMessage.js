@@ -1,4 +1,6 @@
 var React = require("react");
+var render  = require("react-dom").default;
+var AsyncButton = require("react-async-button").default;
 
 class EnvoiMessage extends React.Component {
   
@@ -6,6 +8,7 @@ class EnvoiMessage extends React.Component {
     super(props);
     this.envoiMessage = this.envoiMessage.bind(this);
     this.handleChange = this.handleChange.bind(this);
+    this.clickHandler = this.clickHandler.bind(this);
   }
 
   handleChange(event){
@@ -28,22 +31,39 @@ class EnvoiMessage extends React.Component {
     .then(response => response.json())
     .then(data => sessionStorage.setItem(data.message, data.id))
   }
-
+ 
+ clickHandler(event) {
+    return new Promise((resolve, reject) => {
+      // some async stuff
+      setTimeout(resolve, 500);
+      this.envoiMessage(event);
+      
+    })
+  }
 
   render(){
     return(
-      <div className="wrapper">
-      <form  className="form-signin" onSubmit={this.envoiMessage}>
-        <h2 className="form-signin-heading">Envoi Message</h2>
-        <label>
-        Message : 
-        <textarea className="form-control" rows="3" name="message" placeholder="Message" required="" onChange={this.handleChange}/>
-        </label>
-        <br/>
-        <br/>
-         <input className="btn btn-lg btn-primary btn-block" type="submit" value="Envoyer"/>
-        <br/>
-        <br/>
+      <div>
+      <form>
+      <div className="panel-footer">
+          <div className="input-group">
+              <input id="btn-input" type="text" className="form-control input-sm" name="message" onChange={this.handleChange} placeholder="Tape ton message ici..." />
+                  <span className="input-group-btn">
+                    <AsyncButton
+                      className="btn btn-lg btn-primary btn-block"
+                      text="Envoi"
+                      pendingText="Envoi du message..."
+                      fulFilledText="Envoi réussi !"
+                      rejectedText="Impossible ! Taper un message"
+                      loadingClass="isSaving"
+                      fulFilledClass="btn-primary"
+                      rejectedClass="btn-danger"
+                      onClick={this.clickHandler}
+                     />
+                  </span>
+            </div>
+          </div>
+          <br/>
       </form>
       </div>
     );
